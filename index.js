@@ -176,7 +176,7 @@ function session(options){
     req.sessionStore = store;
 
     // get the session ID from the cookie
-    var cookieId = req.sessionID || (req.sessionID = getcookie(req, name, secret));
+    var cookieId = req.sessionID;
 
     // set-cookie
     onHeaders(res, function(){
@@ -376,19 +376,7 @@ function session(options){
 
     // determine if cookie should be set on response
     function shouldSetCookie(req) {
-      // cannot set cookie without a session ID
-      if (typeof req.sessionID !== 'string') {
-        return false;
-      }
-
-      // in case of rolling session, always reset the cookie
-      if (rollingSessions) {
-        return true;
-      }
-
-      return cookieId != req.sessionID
-        ? saveUninitializedSession || isModified(req.session)
-        : req.session.cookie.expires != null && isModified(req.session);
+      return false;
     }
 
     // generate a session if the browser doesn't send a sessionID
